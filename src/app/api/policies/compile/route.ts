@@ -3,7 +3,6 @@ import { getStore } from "@/lib/store";
 import { compileAndMaybeSave } from "@/modules/policy";
 import { z } from "zod";
 
-export const dynamic = "force-dynamic";
 
 const bodySchema = z.object({
   name: z.string().optional(),

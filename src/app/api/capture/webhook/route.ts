@@ -4,7 +4,6 @@ import { getStore } from "@/lib/store";
 import { captureWebhook } from "@/modules/capture";
 import { ZodError } from "zod";
 
-export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   const authError = requireCaptureAuth(request, getConfig().captureToken);

@@ -3,7 +3,6 @@ import { jsonError, jsonOk, requireCaptureAuth } from "@/lib/http";
 import { getStore } from "@/lib/store";
 import { captureOtel } from "@/modules/capture";
 
-export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   const authError = requireCaptureAuth(request, getConfig().captureToken);

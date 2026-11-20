@@ -122,10 +122,14 @@ function evaluateRule(
 
   const score =
     typeof actual === "number"
-      ? Math.min(1, Math.max(0, actual > 1 ? (actual === true ? 1 : 0) : actual))
-      : passed
-        ? 1
-        : 0;
+      ? Math.min(1, Math.max(0, actual > 1 ? 1 : actual))
+      : typeof actual === "boolean"
+        ? actual
+          ? 1
+          : 0
+        : passed
+          ? 1
+          : 0;
 
   return {
     name: rule.category === "custom" ? metric : rule.category,

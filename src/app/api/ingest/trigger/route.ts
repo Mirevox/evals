@@ -4,7 +4,6 @@ import type { HyperscalerProvider } from "@/lib/types";
 import { HYPERSCALER_PROVIDERS, triggerStubIngest } from "@/modules/ingest";
 import { z } from "zod";
 
-export const dynamic = "force-dynamic";
 
 const bodySchema = z.object({
   providers: z

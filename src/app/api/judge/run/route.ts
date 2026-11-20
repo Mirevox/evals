@@ -3,7 +3,6 @@ import { getStore } from "@/lib/store";
 import { runJudge } from "@/modules/judge";
 import { z } from "zod";
 
-export const dynamic = "force-dynamic";
 
 const bodySchema = z.object({
   turnId: z.string().optional(),

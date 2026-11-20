@@ -2,7 +2,6 @@ import { jsonOk } from "@/lib/http";
 import { getStore } from "@/lib/store";
 import type { EvalResult } from "@/lib/types";
 
-export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
