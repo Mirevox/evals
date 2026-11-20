@@ -1,0 +1,37 @@
+services:
+  evals:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mirevox/evals:local
+    container_name: mirevox-evals
+    ports:
+      - "${PORT:-3847}:3847"
+    environment:
+      NODE_ENV: production
+      PORT: "3847"
+      HOSTNAME: "0.0.0.0"
+      EVALS_STORE: ${EVALS_STORE:-json-file}
+      EVALS_DATA_DIR: /app/data
+      EVALS_CAPTURE_TOKEN: ${EVALS_CAPTURE_TOKEN:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_BASE_URL: ${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
+      OPENROUTER_JUDGE_MODEL: ${OPENROUTER_JUDGE_MODEL:-openai/gpt-4o-mini}
+    volumes:
+      - evals-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3847/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+
+volumes:
+  evals-data:

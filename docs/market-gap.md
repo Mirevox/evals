@@ -11,6 +11,17 @@ _Research snapshot: 20 November 2026._
 
 There is no broad “eval platform” gap. LangSmith, Braintrust, Langfuse, Opik, Confident AI, Arize, and others already combine traces, datasets, LLM-as-judge, production scoring, dashboards, and alerts. Helicone and Portkey already put evaluation or guardrails on an AI gateway. LiteLLM already exposes router-layer guardrail and OpenTelemetry hooks. Promptfoo, DeepEval, Ragas, and Phoenix provide strong open-source building blocks.
 
+### Top 4 closest alternatives (2026)
+
+| # | Alternative | Posture | Strengths | Weakness vs Mirevox thesis |
+| --- | --- | --- | --- | --- |
+| 1 | **Langfuse** | OSS + cloud | Self-hostable traces, datasets, online evals | Centered on its own trace store; no English→multi-provider policy compiler |
+| 2 | **Portkey** | Paid gateway | Guardrails on the gateway path, multi-provider routing | Closed control plane; not a portable OSS governance IR |
+| 3 | **Promptfoo** | OSS (MIT) + ecosystem shift | Strong CI/red-team assertions, broad providers | Library/CLI — not a live router capture + federation dashboard |
+| 4 | **Braintrust** / **LangSmith** (tie for paid suite) | Paid platforms | Production scoring, judges, datasets, workflows | Vendor-centric; weak incentive for hyperscaler-native score federation |
+
+**v1 gap check:** Our slice (OTel/webhook capture, English compiler with dry-run mappings, hyperscaler **stubs**, MockJudge, dark dashboard) addresses a *real but narrow* gap only if positioned as a router-aware evidence/control plane—not as “another eval platform.” Live provider push/pull and inline blocking remain out of scope; overclaiming those would erase the honesty of the wedge.
+
 Mirevox is worth shipping only as a **thin, provider-neutral eval control plane for routed traffic**:
 
 1. One portable, versioned policy source written in constrained English.

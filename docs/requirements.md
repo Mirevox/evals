@@ -9,7 +9,7 @@ cursor:
 
 Target repo: `https://github.com/Mirevox/evals`  
 Runtime: Next.js (TypeScript) on port **3847** · License: Apache-2.0  
-Companion docs: `docs/problem-opportunity.md`, `docs/architecture.md`, `docs/market-gap.md`, `docs/devils-advocate.md`
+Companion docs: `docs/problem-statement.md`, `docs/problem-opportunity.md`, `docs/architecture.md`, `docs/market-gap.md`, `docs/devils-advocate.md`
 
 ## Scope locked for v1
 
@@ -58,7 +58,7 @@ Companion docs: `docs/problem-opportunity.md`, `docs/architecture.md`, `docs/mar
 ## Non-functional requirements
 
 - **NFR-1** Zero-key runnable: `npm install && npm run dev` works without cloud credentials.
-- **NFR-2** Capture is non-blocking for callers (fire-and-forget from router).
+- **NFR-2** Capture is non-blocking **for the router serving path**: callers SHOULD fire-and-forget (do not await scoring). The evals server itself awaits durable persist before returning 200 (honest latency bound for the capture HTTP call, not inline judging).
 - **NFR-3** Persistence behind `EvalStore` (`json-file` default, `memory` for tests).
 - **NFR-4** Modules under `src/modules/{capture,ingest,policy,judge}` have no Next.js imports.
 - **NFR-5** Never log API keys or Authorization headers.
