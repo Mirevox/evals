@@ -13,14 +13,26 @@ There is no broad “eval platform” gap. LangSmith, Braintrust, Langfuse, Opik
 
 ### Top 4 closest alternatives (2026)
 
-| # | Alternative | Posture | Strengths | Weakness vs Mirevox thesis |
-| --- | --- | --- | --- | --- |
-| 1 | **Langfuse** | OSS + cloud | Self-hostable traces, datasets, online evals | Centered on its own trace store; no English→multi-provider policy compiler |
-| 2 | **Portkey** | Paid gateway | Guardrails on the gateway path, multi-provider routing | Closed control plane; not a portable OSS governance IR |
-| 3 | **Promptfoo** | OSS (MIT) + ecosystem shift | Strong CI/red-team assertions, broad providers | Library/CLI — not a live router capture + federation dashboard |
-| 4 | **Braintrust** / **LangSmith** (tie for paid suite) | Paid platforms | Production scoring, judges, datasets, workflows | Vendor-centric; weak incentive for hyperscaler-native score federation |
+| # | Alternative | Posture | Live/router eval | Policy authoring | Native eval-job federation | Mirevox opening |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | **Portkey** | MIT gateway + paid cloud | Strong (incl. blocking) | JSON / configured guardrails | Not documented | Portable English source + evidence federation |
+| 2 | **Langfuse** | MIT self-host + paid cloud | Strong online rules + gateway | UI / code / judge prompts | Generic scores, not native jobs | Target compilation + source provenance |
+| 3 | **Comet Opik** | Apache-2.0 + paid cloud | Strong rules + gateway integrations | UI / API / Python | Not documented | Thin interoperable layer (Opik proves “OSS dashboard” alone is not enough) |
+| 4 | **LangSmith** | Proprietary SaaS | Strong run/thread evaluation | UI / code / judge prompts | Not documented | Open, provider-neutral evidence |
 
-**v1 gap check:** Our slice (OTel/webhook capture, English compiler with dry-run mappings, hyperscaler **stubs**, MockJudge, dark dashboard) addresses a *real but narrow* gap only if positioned as a router-aware evidence/control plane—not as “another eval platform.” Live provider push/pull and inline blocking remain out of scope; overclaiming those would erase the honesty of the wedge.
+Portkey is the sharpest direct threat. Opik is the strongest evidence that an Apache-2.0 eval dashboard alone is not differentiated.
+
+### v1 reality check
+
+| Thesis claim | v1 reality |
+| --- | --- |
+| Pull hyperscaler evaluations | Fixture normalizers only — no live credentials, polling, or source deep links |
+| Translate/propagate into provider toolsets | Dry-run mapping labels (`not_pushed`); no provider artifacts or semantic-diff report |
+| English compiler | Constrained keyword/regex parser — not arbitrary NL enforcement |
+| Real-time evals | Capture is immediate; judging is **on-demand** (no auto attach / queue / sampling) |
+| Unified comparison | Normalized 0–1 scores; semantics are **not** equivalent across providers |
+
+**Gap verdict:** the interoperability gap is real; v1 proves a runnable reference slice but does **not** yet close the thesis. Ship-with-caveats as a developer preview, not a production governance platform.
 
 Mirevox is worth shipping only as a **thin, provider-neutral eval control plane for routed traffic**:
 

@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Mirevox Evals",
   description:
-    "Realtime evals, English governance, and hyperscaler ingest for the Mirevox control plane",
+    "Router-aware eval capture, English policy compile (dry-run), and fixture hyperscaler ingest for the Mirevox control plane",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body>{children}</body>
     </html>
   );

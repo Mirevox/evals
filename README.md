@@ -1,14 +1,16 @@
 # Mirevox Evals
 
-Realtime evaluation and English governance for the [Mirevox](https://github.com/Mirevox) control plane.
+Evaluation and English governance for the [Mirevox](https://github.com/Mirevox) control plane.
 
 **License: [Apache-2.0](LICENSE).**
 
 ## Problem
 
-Multi-provider stacks split evaluation and policy across Foundry, Bedrock, Vertex, and local models. Rules start in English; scores and guardrails diverge by vendor; live router traffic is rarely scored in one neutral place.
+Teams using more than one AI provider end up with evaluation evidence scattered across cloud consoles, tracing products, and gateway logs. The same quality or safety intent must be rewritten for each tool, and similarly named scores often hide different implementations.
 
-Mirevox evals is a **thin OSS control-plane module**: capture routed conversations out-of-band, compile English rules into inspectable (dry-run) provider mappings, merge hyperscaler **stub** scores into one dashboard, and judge turns with MockJudge by default. It is not a full LangSmith/Braintrust replacement and does not push live policies to clouds in v1.
+Mirevox Evals explores a provider-neutral control plane for that gap: capture routed conversations, express evaluation intent in constrained English, inspect how it maps to provider targets, and retain cross-provider results with their provenance.
+
+The current v1 is an Apache-2.0 **reference slice**. It provides webhook and OTLP/HTTP capture, fixture-based Foundry/Bedrock/Vertex normalization, dry-run policy mappings, and on-demand MockJudge or OpenRouter scoring. Live hyperscaler connectors, provider-side policy propagation, and automatic production evaluation are not implemented yet.
 
 ## One-command Docker standup
 

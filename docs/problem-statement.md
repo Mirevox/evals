@@ -15,7 +15,7 @@ Existing products solve pieces of this (observability suites, gateway guardrails
 - **Capture** smart-router turns via webhook or OTLP/HTTP JSON (GenAI spans only).
 - **Compile** constrained English into a structured `PolicyDocument` with dry-run provider mappings (`pushStatus: "not_pushed"`).
 - **Ingest** Foundry / Bedrock / Vertex **fixture stubs** into a normalized `EvalResult` schema.
-- **Judge** turns with deterministic MockJudge by default; optional OpenRouter when keyed.
+- **Judge** turns on demand with deterministic MockJudge by default; optional OpenRouter when keyed (not automatic production scoring).
 - **Dashboard + REST** on port 3847, dark UI, Apache-2.0, Docker one-command standup.
 
 ## What v1 does *not* claim
