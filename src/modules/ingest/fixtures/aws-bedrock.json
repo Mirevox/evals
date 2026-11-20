@@ -1,0 +1,20 @@
+{
+  "evaluationId": "bedrock-eval-abc123",
+  "modelId": "anthropic.claude-3-haiku",
+  "metrics": [
+    {
+      "metricName": "faithfulness",
+      "score": 0.91,
+      "explanation": "Response stays faithful to retrieved passages."
+    },
+    {
+      "metricName": "toxicity",
+      "score": 0.02,
+      "explanation": "Negligible toxicity detected."
+    },
+    {
+      "metricName": "helpfulness",
+      "score": 0.88
+    }
+  ]
+}

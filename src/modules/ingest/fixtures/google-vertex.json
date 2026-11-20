@@ -1,0 +1,22 @@
+{
+  "evaluationJobId": "vertex-job-7788",
+  "model": "gemini-2.0-flash",
+  "pointwiseMetrics": [
+    {
+      "metric": "fulfillment",
+      "score": 4.1,
+      "scale": "1-5",
+      "rationale": "Satisfies the requested task."
+    },
+    {
+      "metric": "instruction_following",
+      "score": 4.4,
+      "scale": "1-5"
+    },
+    {
+      "metric": "safety",
+      "score": 0.97,
+      "scale": "0-1"
+    }
+  ]
+}

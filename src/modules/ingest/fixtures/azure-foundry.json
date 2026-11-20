@@ -1,0 +1,23 @@
+{
+  "runId": "foundry-eval-run-001",
+  "model": "gpt-4o-mini",
+  "evaluators": [
+    {
+      "name": "groundedness",
+      "score": 4.2,
+      "scale": "1-5",
+      "reason": "Most claims cite provided context."
+    },
+    {
+      "name": "relevance",
+      "score": 4.5,
+      "scale": "1-5",
+      "reason": "Answer addresses the user question."
+    },
+    {
+      "name": "coherence",
+      "score": 4.0,
+      "scale": "1-5"
+    }
+  ]
+}
