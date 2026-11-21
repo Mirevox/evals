@@ -98,6 +98,7 @@ export interface PolicyDocument {
       pushStatus: "not_pushed";
       targetPrimitive: string;
       ruleCount: number;
+      compiledConfig?: Record<string, unknown>;
     }
   >;
   warnings: string[];

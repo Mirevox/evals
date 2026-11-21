@@ -10,13 +10,20 @@ export async function POST(request: Request) {
   if (authError) return authError;
 
   try {
+    const url = new URL(request.url);
+    const autoJudge = url.searchParams.get("autoJudge") === "true" ? true : undefined;
+    const policyId = url.searchParams.get("policyId") ?? undefined;
     const body = await request.json();
-    const result = await captureWebhook(getStore(), body);
+    const result = await captureWebhook(getStore(), body, {
+      autoJudge,
+      policyId,
+    });
     return jsonOk(
       {
         accepted: result.accepted,
         skipped: result.skipped,
         turnIds: result.turnIds,
+        evalIds: result.evalIds,
       },
       201,
     );

@@ -147,4 +147,22 @@ describe("capture", () => {
     expect(turn.prompt).toBe("Prompt via event");
     expect(turn.response).toBe("Completion via event");
   });
+
+  it("auto-judges captured webhook turns when autoJudge is enabled", async () => {
+    const store = new MemoryStore();
+    const result = await captureWebhook(
+      store,
+      {
+        conversationId: "c-auto",
+        model: "m1",
+        prompt: "Say hello",
+        response: "Hello there!",
+        provider: "local",
+      },
+      { autoJudge: true },
+    );
+    expect(result.accepted).toBe(1);
+    expect(result.evalIds.length).toBe(1);
+    expect((await store.listEvals()).length).toBe(1);
+  });
 });

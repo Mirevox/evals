@@ -19,6 +19,21 @@ Always include JSON output when requested.`,
     expect(policy.providerMappings["azure-foundry"].pushStatus).toBe(
       "not_pushed",
     );
+    expect(
+      policy.providerMappings["aws-bedrock"].compiledConfig,
+    ).toMatchObject({
+      schema: "aws.bedrock.guardrail.v1",
+    });
+    expect(
+      policy.providerMappings["azure-foundry"].compiledConfig,
+    ).toMatchObject({
+      schema: "azure.ai.contentsafety.v1",
+    });
+    expect(
+      policy.providerMappings["google-vertex"].compiledConfig,
+    ).toMatchObject({
+      schema: "google.vertex.safety_eval.v1",
+    });
   });
 
   it("rejects empty english", () => {
