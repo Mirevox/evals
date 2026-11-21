@@ -17,22 +17,54 @@ function attrMap(attrs: OtlpAttribute[] | undefined): Record<string, string> {
 
 function mapProvider(system?: string): ProviderName {
   const s = (system ?? "").toLowerCase();
-  if (s.includes("azure") || s.includes("foundry") || s.includes("openai"))
-    return "azure-foundry";
-  if (s.includes("bedrock") || s.includes("aws") || s.includes("anthropic"))
-    return "aws-bedrock";
+  if (s.includes("azure") || s.includes("foundry")) return "azure-foundry";
+  if (s.includes("bedrock") || s.includes("aws")) return "aws-bedrock";
   if (s.includes("vertex") || s.includes("google") || s.includes("gemini"))
     return "google-vertex";
   if (s.includes("openrouter")) return "openrouter";
   if (s.includes("ollama") || s.includes("local")) return "local";
-  return system ? "unknown" : "unknown";
+  // Direct OpenAI / Anthropic APIs are not hyperscaler labels — keep unknown.
+  return "unknown";
+}
+
+function contentFromEventAttrs(ea: Record<string, string>): string {
+  return (
+    ea["gen_ai.content.prompt"] ||
+    ea["gen_ai.content.completion"] ||
+    ea["gen_ai.prompt"] ||
+    ea["gen_ai.completion"] ||
+    ea["content"] ||
+    ""
+  );
 }
 
 function extractFromSpan(span: OtlpSpan): ConversationTurn | null {
   const attrs = attrMap(span.attributes);
-  const eventAttrs: Record<string, string> = {};
+  let eventPrompt = "";
+  let eventCompletion = "";
   for (const event of span.events ?? []) {
-    Object.assign(eventAttrs, attrMap(event.attributes));
+    const ea = attrMap(event.attributes);
+    const name = (event.name ?? "").toLowerCase();
+    const content = contentFromEventAttrs(ea);
+    if (!content) continue;
+    if (
+      name.includes("prompt") ||
+      name.includes(".user") ||
+      name.includes("input")
+    ) {
+      eventPrompt = content;
+    } else if (
+      name.includes("completion") ||
+      name.includes("output") ||
+      name.includes("response") ||
+      name.includes("assistant")
+    ) {
+      eventCompletion = content;
+    } else if (ea["gen_ai.content.prompt"]) {
+      eventPrompt = ea["gen_ai.content.prompt"];
+    } else if (ea["gen_ai.content.completion"]) {
+      eventCompletion = ea["gen_ai.content.completion"];
+    }
   }
 
   const model =
@@ -43,16 +75,13 @@ function extractFromSpan(span: OtlpSpan): ConversationTurn | null {
   const prompt =
     attrs["gen_ai.prompt"] ||
     attrs["gen_ai.input"] ||
-    eventAttrs["gen_ai.content.prompt"] ||
-    eventAttrs["content"] ||
+    eventPrompt ||
     "";
   const response =
     attrs["gen_ai.completion"] ||
     attrs["gen_ai.output"] ||
-    eventAttrs["gen_ai.content.completion"] ||
-    eventAttrs["content"] ||
+    eventCompletion ||
     "";
-
   const isGenAi =
     Boolean(attrs["gen_ai.system"]) ||
     Boolean(model) ||

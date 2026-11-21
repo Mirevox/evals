@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 
 type Tab = "conversations" | "scores" | "policy";
 
@@ -93,6 +93,11 @@ export function Dashboard() {
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [judgeMode, setJudgeMode] = useState<"auto" | "mock" | "openrouter">(
+    "mock",
+  );
+  const [policyId, setPolicyId] = useState<string>("");
+  const [, startTransition] = useTransition();
 
   const refresh = useCallback(async () => {
     const [h, c, e, p] = await Promise.all([
@@ -106,11 +111,17 @@ export function Dashboard() {
     setEvals(e.data);
     setSummary(e.summary);
     setPolicies(p.data);
+    setPolicyId((current) => current || p.data[0]?.id || "");
   }, []);
 
   useEffect(() => {
-    refresh().catch((err: Error) => setError(err.message));
-  }, [refresh]);
+    const timer = window.setTimeout(() => {
+      startTransition(() => {
+        void refresh().catch((err: Error) => setError(err.message));
+      });
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [refresh, startTransition]);
 
   const latestByTurn = useMemo(() => {
     const map = new Map<string, EvalRow>();
@@ -316,6 +327,37 @@ export function Dashboard() {
                     {selectedTurn.response}
                   </pre>
                 </div>
+                <label className="block text-sm text-[var(--muted)]">
+                  Policy
+                  <select
+                    className="mt-1 w-full rounded-lg border border-[var(--line)] bg-black/30 px-3 py-2 text-[var(--fg)]"
+                    value={policyId}
+                    onChange={(e) => setPolicyId(e.target.value)}
+                  >
+                    <option value="">None</option>
+                    {policies.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name} (v{p.version})
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block text-sm text-[var(--muted)]">
+                  Judge mode
+                  <select
+                    className="mt-1 w-full rounded-lg border border-[var(--line)] bg-black/30 px-3 py-2 text-[var(--fg)]"
+                    value={judgeMode}
+                    onChange={(e) =>
+                      setJudgeMode(
+                        e.target.value as "auto" | "mock" | "openrouter",
+                      )
+                    }
+                  >
+                    <option value="mock">mock (heuristic offline)</option>
+                    <option value="auto">auto</option>
+                    <option value="openrouter">openrouter</option>
+                  </select>
+                </label>
                 <Action
                   disabled={Boolean(busy)}
                   onClick={() =>
@@ -324,16 +366,18 @@ export function Dashboard() {
                         method: "POST",
                         body: JSON.stringify({
                           turnId: selectedTurn.id,
-                          mode: "mock",
-                          policyId: policies[0]?.id,
+                          mode: judgeMode,
+                          ...(policyId ? { policyId } : {}),
                         }),
                       });
-                      setNotice("Judge run complete.");
+                      setNotice(
+                        `Judge run complete (${judgeMode}${policyId ? "" : ", no policy"}).`,
+                      );
                       setTab("scores");
                     })
                   }
                 >
-                  {busy === "judge" ? "Judging…" : "Run MockJudge"}
+                  {busy === "judge" ? "Judging…" : "Run judge"}
                 </Action>
               </div>
             ) : (
@@ -385,9 +429,9 @@ export function Dashboard() {
                     <td className="px-4 py-3 text-[var(--muted)]">
                       {row.rationale}
                       <div className="mt-2 flex flex-wrap gap-2">
-                        {row.metrics.slice(0, 4).map((m) => (
+                        {row.metrics.slice(0, 4).map((m, idx) => (
                           <span
-                            key={`${row.id}-${m.name}`}
+                            key={`${row.id}-${idx}-${m.name}`}
                             className="rounded-md border border-[var(--line)] px-2 py-1 text-xs"
                           >
                             {m.name}: {m.score.toFixed(2)}

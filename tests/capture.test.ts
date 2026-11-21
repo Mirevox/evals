@@ -92,4 +92,59 @@ describe("capture", () => {
     expect(second.accepted).toBe(0);
     expect(second.skipped).toBe(1);
   });
+
+  it("keeps prompt and completion distinct from OTel span events", async () => {
+    const store = new MemoryStore();
+    const result = await captureOtel(store, {
+      resourceSpans: [
+        {
+          scopeSpans: [
+            {
+              spans: [
+                {
+                  traceId: "t1",
+                  spanId: "evt1",
+                  name: "chat",
+                  attributes: [
+                    {
+                      key: "gen_ai.system",
+                      value: { stringValue: "local" },
+                    },
+                    {
+                      key: "gen_ai.request.model",
+                      value: { stringValue: "m" },
+                    },
+                  ],
+                  events: [
+                    {
+                      name: "gen_ai.content.prompt",
+                      attributes: [
+                        {
+                          key: "content",
+                          value: { stringValue: "Prompt via event" },
+                        },
+                      ],
+                    },
+                    {
+                      name: "gen_ai.content.completion",
+                      attributes: [
+                        {
+                          key: "content",
+                          value: { stringValue: "Completion via event" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(result.accepted).toBe(1);
+    const turn = (await store.listTurns())[0];
+    expect(turn.prompt).toBe("Prompt via event");
+    expect(turn.response).toBe("Completion via event");
+  });
 });

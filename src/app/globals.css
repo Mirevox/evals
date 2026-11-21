@@ -28,9 +28,18 @@
   box-sizing: border-box;
 }
 
+html {
+  color-scheme: dark;
+}
+
 html,
 body {
   min-height: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--neon);
+  outline-offset: 2px;
 }
 
 body {

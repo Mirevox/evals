@@ -11,6 +11,29 @@ _Research snapshot: 20 November 2026._
 
 There is no broad “eval platform” gap. LangSmith, Braintrust, Langfuse, Opik, Confident AI, Arize, and others already combine traces, datasets, LLM-as-judge, production scoring, dashboards, and alerts. Helicone and Portkey already put evaluation or guardrails on an AI gateway. LiteLLM already exposes router-layer guardrail and OpenTelemetry hooks. Promptfoo, DeepEval, Ragas, and Phoenix provide strong open-source building blocks.
 
+### Top 4 closest alternatives (2026)
+
+| # | Alternative | Posture | Live/router eval | Policy authoring | Native eval-job federation | Mirevox opening |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | **Portkey** | MIT gateway + paid cloud | Strong (incl. blocking) | JSON / configured guardrails | Not documented | Portable English source + evidence federation |
+| 2 | **Langfuse** | MIT self-host + paid cloud | Strong online rules + gateway | UI / code / judge prompts | Generic scores, not native jobs | Target compilation + source provenance |
+| 3 | **Comet Opik** | Apache-2.0 + paid cloud | Strong rules + gateway integrations | UI / API / Python | Not documented | Thin interoperable layer (Opik proves “OSS dashboard” alone is not enough) |
+| 4 | **LangSmith** | Proprietary SaaS | Strong run/thread evaluation | UI / code / judge prompts | Not documented | Open, provider-neutral evidence |
+
+Portkey is the sharpest direct threat. Opik is the strongest evidence that an Apache-2.0 eval dashboard alone is not differentiated.
+
+### v1 reality check
+
+| Thesis claim | v1 reality |
+| --- | --- |
+| Pull hyperscaler evaluations | Fixture normalizers only — no live credentials, polling, or source deep links |
+| Translate/propagate into provider toolsets | Dry-run mapping labels (`not_pushed`); no provider artifacts or semantic-diff report |
+| English compiler | Constrained keyword/regex parser — not arbitrary NL enforcement |
+| Real-time evals | Capture is immediate; judging is **on-demand** (no auto attach / queue / sampling) |
+| Unified comparison | Normalized 0–1 scores; semantics are **not** equivalent across providers |
+
+**Gap verdict:** the interoperability gap is real; v1 proves a runnable reference slice but does **not** yet close the thesis. Ship-with-caveats as a developer preview, not a production governance platform.
+
 Mirevox is worth shipping only as a **thin, provider-neutral eval control plane for routed traffic**:
 
 1. One portable, versioned policy source written in constrained English.
