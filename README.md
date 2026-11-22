@@ -101,3 +101,7 @@ Still **not** production-complete:
 Copyright contributors to Mirevox evals.
 
 Licensed under the **Apache License, Version 2.0** — see [LICENSE](LICENSE). `package.json` `"license": "Apache-2.0"`.
+
+## Verification
+
+Test suite, smoke test, and container verification results are recorded in [`VERIFICATION.md`](./VERIFICATION.md).
